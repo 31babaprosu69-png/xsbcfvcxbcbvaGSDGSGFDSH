@@ -38,7 +38,7 @@ public class PocketEvents {
         border.setSize(48.0); // 3 chunks = 48 blocks diameter
         border.setDamagePerBlock(0.2);
         border.setDamageSafeZone(1.0);
-        border.setWarningDistance(2);
+        border.setWarningBlocks(2);
         border.setWarningTime(15);
         player.connection.send(new ClientboundInitializeBorderPacket(border));
     }

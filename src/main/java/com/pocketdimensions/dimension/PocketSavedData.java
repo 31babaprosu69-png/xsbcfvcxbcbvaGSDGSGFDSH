@@ -154,31 +154,28 @@ public class PocketSavedData extends SavedData {
         PlayerReturnPos ret = sd.getReturnLocation(player.getUUID());
 
         ServerLevel targetLevel = null;
-        double tx, ty, tz;
+        double tx = 0.0, ty = 0.0, tz = 0.0;
         float yaw = 0.0F, pitch = 0.0F;
 
         if (ret != null) {
             targetLevel = server.getLevel(ret.dim);
-            tx = ret.x;
-            ty = ret.y;
-            tz = ret.z;
-            yaw = ret.yaw;
-            pitch = ret.pitch;
+            if (targetLevel != null) {
+                tx = ret.x;
+                ty = ret.y;
+                tz = ret.z;
+                yaw = ret.yaw;
+                pitch = ret.pitch;
+            }
         }
 
-        if (targetLevel == null) {
+        if (targetLevel == null || ty <= targetLevel.getMinBuildHeight()) {
             targetLevel = server.overworld();
             BlockPos sp = targetLevel.getSharedSpawnPos();
             tx = sp.getX() + 0.5;
             ty = sp.getY() + 1.0;
             tz = sp.getZ() + 0.5;
-        }
-
-        if (ty <= targetLevel.getMinBuildHeight()) {
-            BlockPos sp = targetLevel.getSharedSpawnPos();
-            tx = sp.getX() + 0.5;
-            ty = sp.getY() + 1.0;
-            tz = sp.getZ() + 0.5;
+            yaw = 0.0F;
+            pitch = 0.0F;
         }
 
         player.teleportTo(targetLevel, tx, ty, tz, yaw, pitch);
